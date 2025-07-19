@@ -7,7 +7,6 @@ import {
   MapPin,
   Github,
   Linkedin,
-  Download,
   Code,
   GraduationCap,
   Briefcase,
@@ -165,6 +164,47 @@ const AnimatedSection = ({ children, className = "", delay = 0, ...props }: any)
   )
 }
 
+// CV Download Function
+const downloadCV = () => {
+  // Create a temporary link element
+  const link = document.createElement("a")
+  link.href = "/cv/Khoirul_Gunawan_CV.pdf" // Path to your CV file
+  link.download = "Khoirul_Gunawan_CV.pdf" // Filename for download
+  link.target = "_blank"
+
+  // Append to body, click, and remove
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+// Alternative method using fetch for better browser compatibility
+const downloadCVWithFetch = async () => {
+  try {
+    const response = await fetch("/cv/Khoirul_Gunawan_CV.pdf")
+    if (!response.ok) {
+      throw new Error("CV file not found")
+    }
+
+    const blob = await response.blob()
+    const url = window.URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.href = url
+    link.download = "Khoirul_Gunawan_CV.pdf"
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    // Clean up the URL object
+    window.URL.revokeObjectURL(url)
+  } catch (error) {
+    console.error("Error downloading CV:", error)
+    // Fallback: open CV in new tab if download fails
+    window.open("/cv/Khoirul_Gunawan_CV.pdf", "_blank")
+  }
+}
+
 // Background Effects Component
 const BackgroundEffects = () => {
   return (
@@ -299,7 +339,7 @@ export default function Portfolio() {
       "Programming & Scripting Languages (PHP, Laravel, JavaScript, Node.js, Python, Java, C++, VB .NET)",
       "Database Management (MySQL, SQL Server, PostgreSQL)",
       "Version Control (Git, Github)",
-      "Basic Data Analysis (Excel, SQL, Python/Pandas)"
+      "Basic Data Analysis (Excel, SQL, Python/Pandas)",
     ],
     softSkills: ["Problem Solving", "Critical Thinking", "Time Management", "Effective Communication"],
     languages: ["Indonesian - Native", "English - Native"],
@@ -379,7 +419,7 @@ export default function Portfolio() {
     {
       title: "Edugot",
       description:
-        "EduGot is a web-based application designed to address Indonesia’s growing household waste problem by introducing an innovative organic waste solution: black soldier fly larvae, also known as maggots. These larvae are capable of breaking down organic waste into nutrient-rich compost efficiently.",
+        "EduGot is a web-based application designed to address Indonesia's growing household waste problem by introducing an innovative organic waste solution: black soldier fly larvae, also known as maggots. These larvae are capable of breaking down organic waste into nutrient-rich compost efficiently.",
       image: "/projects/Edugot.jpg",
       technologies: ["Laravel", "Restful API", "MySQL", "Bootstrap", "Javascript"],
       category: "Full Stack",
@@ -414,7 +454,7 @@ export default function Portfolio() {
       ],
       githubUrl: "https://github.com/khoirul55/task-manager",
       liveUrl: "https://taskmanager.khoirul.dev",
-      highlights:  ["Inventory Logic", "Multi-role System", "Real-time Stock Updates"],
+      highlights: ["Inventory Logic", "Multi-role System", "Real-time Stock Updates"],
     },
     {
       title: "AHP and TOPSIS-Based Decision Support System for Sunscreen Selection",
@@ -427,10 +467,10 @@ export default function Portfolio() {
       date: "Mei 2024",
       features: [
         "Pairwise comparison matrix input (AHP)",
-      "Criteria and alternative weight calculation",
-      "TOPSIS ranking algorithm implementation",
-      "Sunscreen product selection result display",
-      "Admin panel to manage data input",
+        "Criteria and alternative weight calculation",
+        "TOPSIS ranking algorithm implementation",
+        "Sunscreen product selection result display",
+        "Admin panel to manage data input",
       ],
       githubUrl: "https://github.com/khoirul55/weather-app",
       liveUrl: "https://weather.khoirul.dev",
@@ -589,10 +629,6 @@ export default function Portfolio() {
               <Button size="lg" onClick={() => scrollToSection("contact")}>
                 Get In Touch
               </Button>
-              <Button size="lg" variant="outline" onClick={() => window.open("mailto:khoirulgunawan55@email.com")}>
-                <Download className="w-4 h-4 mr-2" />
-                Download CV
-              </Button>
             </div>
           </div>
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
@@ -601,6 +637,7 @@ export default function Portfolio() {
         </div>
       </section>
 
+      {/* Rest of the sections remain the same... */}
       {/* About Section with Staggered Animations */}
       <section id="about" className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -617,12 +654,16 @@ export default function Portfolio() {
                 <CardContent className="p-0">
                   <User className="w-12 h-12 text-emerald-600 mb-6 animate-pulse hover:animate-spin transition-all duration-300" />
                   <p className="text-gray-700 leading-relaxed text-lg hover:text-gray-900 transition-colors duration-300">
-                    I am an Information Systems graduate with a passion for creating meaningful and practical solutions through technology. My experience includes designing systems, developing digital tools, 
-                    and aligning technology with everyday needs in both personal and professional environments.
-                    With a strong foundation in software development and analytical thinking, I enjoy transforming ideas into user-friendly and impactful solutions that solve real-world problems.
+                    I am an Information Systems graduate with a passion for creating meaningful and practical solutions
+                    through technology. My experience includes designing systems, developing digital tools, and aligning
+                    technology with everyday needs in both personal and professional environments. With a strong
+                    foundation in software development and analytical thinking, I enjoy transforming ideas into
+                    user-friendly and impactful solutions that solve real-world problems.
                   </p>
                   <p className="text-gray-700 leading-relaxed text-lg mt-4 hover:text-gray-900 transition-colors duration-300">
-                   I combine logic, creativity, and empathy to build technology that is both effective and relevant. I am committed to continuous learning, innovation, and collaboration to make technology work better for everyone.
+                    I combine logic, creativity, and empathy to build technology that is both effective and relevant. I
+                    am committed to continuous learning, innovation, and collaboration to make technology work better
+                    for everyone.
                   </p>
                 </CardContent>
               </Card>
@@ -1197,24 +1238,13 @@ export default function Portfolio() {
                     className="group"
                   >
                     <Phone className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                    WhatsApp Chat
+                    Chat on WhatsApp
                   </Button>
-                </div>
 
-                {/* Social Media Links */}
-                <div className="flex justify-center space-x-6 mt-8 pt-6 border-t border-gray-200">
-                  <button
-                    onClick={() => window.open("https://github.com/khoirul55", "_blank")}
-                    className="text-gray-400 hover:text-emerald-600 transition-colors duration-300 hover:scale-110 transform"
-                  >
-                    <Github className="w-6 h-6" />
-                  </button>
-                  <button
-                    onClick={() => window.open("https://www.linkedin.com/in/khoirul-gunawan-285300227/", "_blank")}
-                    className="text-gray-400 hover:text-emerald-600 transition-colors duration-300 hover:scale-110 transform"
-                  >
-                    <Linkedin className="w-6 h-6" />
-                  </button>
+                  <Button size="lg" variant="secondary" onClick={downloadCVWithFetch} className="group">
+                    <FileText className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
+                    Download CV
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -1223,10 +1253,10 @@ export default function Portfolio() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 hover:bg-gray-800 transition-colors duration-300">
+      <footer className="py-12 bg-gray-50 border-t border-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-gray-400 hover:text-gray-300 transition-colors duration-300">
-            © 2025 Khoirul Gunawan. All rights reserved.
+          <p className="text-gray-500 text-sm">
+            &copy; {new Date().getFullYear()} Khoirul Gunawan. All rights reserved.
           </p>
         </div>
       </footer>
